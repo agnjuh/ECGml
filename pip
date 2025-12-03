@@ -1,0 +1,79 @@
+import os
+import json
+import numpy as np
+import neurokit2 as nk
+
+# output dir checking
+os.makedirs("results", exist_ok=True)
+
+# loading preprocessed ECG and R-peaks
+signal = np.load("results/preprocessed.npy")
+r_peaks = np.load("results/r_peaks.npy")
+
+# sampling rate (from MIT-BIH record)
+fs = 360  
+
+# full ECG processing, filtering, cleaning
+cleaned = nk.ecg_clean(signal, sampling_rate=fs)
+
+# convert R-peaks into NeuroKit2 format
+rpeaks_dict = {"ECG_R_Peaks": r_peaks}
+
+# Wavelet-based delineation ((best clinical quality))
+delineate = nk.ecg_delineate(
+    cleaned,
+    rpeaks_dict,
+    sampling_rate=fs,
+    method="dwt"       # discrete wavelet transform
+)
+
+# extract positions
+waves_peak = delineate["ECG_Peaks"]
+waves_onset = delineate["ECG_Onsets"]
+waves_offset = delineate["ECG_Offsets"]
+
+# convert beat-by-beat intervals to ms
+def interval_ms(start, end):
+    return (np.array(end) - np.array(start)) / fs * 1000
+
+# computing clinical intervals
+QRS_durations = interval_ms(waves_onset["ECG_Q_Onsets"], waves_offset["ECG_S_Offsets"])
+PR_intervals = interval_ms(waves_onset["ECG_P_Onsets"], waves_onset["ECG_Q_Onsets"])
+QT_intervals = interval_ms(waves_onset["ECG_Q_Onsets"], waves_offset["ECG_T_Offsets"])
+
+# Bazett QTc
+QTc = QT_intervals / np.sqrt(np.mean(np.diff(r_peaks))/fs)
+
+# summary metrics
+results = {
+    "sampling_rate_hz": fs,
+    "n_beats_used": len(r_peaks),
+    "summary": {
+        "QRS_duration_ms_mean": float(np.nanmean(QRS_durations)),
+        "QRS_duration_ms_std": float(np.nanstd(QRS_durations)),
+        "PR_interval_ms_mean": float(np.nanmean(PR_intervals)),
+        "QT_interval_ms_mean": float(np.nanmean(QT_intervals)),
+        "QTc_ms_mean": float(np.nanmean(QTc)),
+        "P_duration_ms_mean": float(np.nanmean(
+            interval_ms(waves_onset["ECG_P_Onsets"], waves_offset["ECG_P_Offsets"])
+        )),
+        "T_duration_ms_mean": float(np.nanmean(
+            interval_ms(waves_onset["ECG_T_Onsets"], waves_offset["ECG_T_Offsets"])
+        )),
+    },
+    "per_beat": {
+        "q_onsets": waves_onset["ECG_Q_Onsets"].tolist(),
+        "s_offsets": waves_offset["ECG_S_Offsets"].tolist(),
+        "t_peaks": waves_peak["ECG_T_Peaks"].tolist(),
+        "p_peaks": waves_peak["ECG_P_Peaks"].tolist()
+    }
+}
+
+# results, saving
+with open("results/delineation.json", "w") as f:
+    json.dump(results, f, indent=4)
+
+print("NeuroKit2 ECG delineation completed.")
+print("QRS duration mean (ms):", results["summary"]["QRS_duration_ms_mean"])
+print("QTc mean (ms):", results["summary"]["QTc_ms_mean"])
+

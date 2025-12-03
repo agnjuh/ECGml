@@ -1,0 +1,31 @@
+
+# Virtual environment
+ecg_env/
+venv/
+.env/
+
+# Workflow output
+results/
+
+# Raw ECG data (downloaded automatically)
+data/
+*.dat
+*.hea
+*.atr
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.ipynb_checkpoints/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Backup / temporary files
+*~
+*.swp
+*.swo

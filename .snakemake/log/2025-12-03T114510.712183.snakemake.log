@@ -1,0 +1,7 @@
+Assuming unrestricted shared filesystem usage.
+host: Agnes
+Building DAG of jobs...
+MissingInputException in rule all in file "/Users/agnesjuhasz/Documents/ECGml/Snakefile", line 5:
+Missing input files for rule all:
+    affected files:
+        results/ecg_plot.pngresults/features.json

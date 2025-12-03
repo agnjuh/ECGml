@@ -1,0 +1,48 @@
+Assuming unrestricted shared filesystem usage.
+host: Agnes
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job              count
+-------------  -------
+all                  1
+delineate_ecg        1
+total                2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Dec  3 16:11:57 2025]
+localrule delineate_ecg:
+    input: results/preprocessed.npy, results/r_peaks.npy
+    output: results/delineation.json
+    jobid: 7
+    reason: Missing output files: results/delineation.json
+    resources: tmpdir=/var/folders/7r/plw5qn4j7xl0z2_tlbnlls7m0000gn/T
+RuleException:
+CalledProcessError in file "/Users/agnesjuhasz/Documents/ECGml/Snakefile", line 83:
+Command 'set -euo pipefail;  python neurokit_delineate.py' returned non-zero exit status 2.
+[Wed Dec  3 16:11:57 2025]
+Error in rule delineate_ecg:
+    message: None
+    jobid: 7
+    input: results/preprocessed.npy, results/r_peaks.npy
+    output: results/delineation.json
+    shell:
+        python neurokit_delineate.py
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Wed Dec  3 16:11:57 2025]
+Error in rule delineate_ecg:
+    message: None
+    jobid: 7
+    input: results/preprocessed.npy, results/r_peaks.npy
+    output: results/delineation.json
+    shell:
+        python neurokit_delineate.py
+        (command exited with non-zero exit code)
+Complete log(s): /Users/agnesjuhasz/Documents/ECGml/.snakemake/log/2025-12-03T161157.321243.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

@@ -1,0 +1,44 @@
+Assuming unrestricted shared filesystem usage.
+host: Agnes
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+hrv_analysis            1
+plot_ecg                1
+preprocess              1
+r_peak_detection        1
+total                   5
+
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Dec  3 11:22:53 2025]
+localrule preprocess:
+    input: data/100.dat, data/100.hea
+    output: results/preprocessed.npy
+    jobid: 1
+    reason: Missing output files: results/preprocessed.npy
+    resources: tmpdir=/var/folders/7r/plw5qn4j7xl0z2_tlbnlls7m0000gn/T
+Waiting at most 5 seconds for missing files:
+results/preprocessed.npy (missing locally)
+MissingOutputException in rule preprocess in file "/Users/agnesjuhasz/Documents/ECGml/Snakefile", line 23:
+Job 1  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+results/preprocessed.npy (missing locally, parent dir contents: r_peaks.npy)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Wed Dec  3 11:23:01 2025]
+Error in rule preprocess:
+    message: None
+    jobid: 1
+    input: data/100.dat, data/100.hea
+    output: results/preprocessed.npy
+    shell:
+        python preprocessing.py
+        (command exited with non-zero exit code)
+Complete log(s): /Users/agnesjuhasz/Documents/ECGml/.snakemake/log/2025-12-03T112253.014420.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.
