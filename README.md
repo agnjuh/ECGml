@@ -48,7 +48,6 @@ ECGml is a fully reproducible, Snakemake-driven pipeline for ECG signal processi
 - Delineation-derived features and morphology-derived descriptors are kept separate to avoid mixing method-specific assumptions in downstream models.
 
 Create a virtual environment:
-Create a virtual environment:
 
 ```bash
 python3 -m venv ecg_env
