@@ -1,4 +1,4 @@
-# ECGml — Modular ECG signal processing & machine learning pipeline
+# ECGml — Modular ECG signal processing & machine learning pipeline ![status](https://img.shields.io/badge/Status-Experimental_Research_Project-purple) ![license](https://img.shields.io/badge/License-All_rights_reserved-red) ![docs](https://img.shields.io/badge/Docs-Continuously_Updated-6f42c1)
 
 ECGml is a fully reproducible, Snakemake-driven pipeline for ECG signal processing, wave delineation, morphological feature extraction, and baseline machine-learning classification. It operates directly on MIT-BIH ECG records and produces visualisations, and model outputs.
 
@@ -6,7 +6,7 @@ ECGml is a fully reproducible, Snakemake-driven pipeline for ECG signal processi
 
 ## Features
 
-### Signal Processing
+### Signal processing
 - MIT-BIH record download (WFDB)
 - Bandpass filtering and normalisation
 - Robust R-peak detection
@@ -21,7 +21,7 @@ ECGml is a fully reproducible, Snakemake-driven pipeline for ECG signal processi
   - surrogate QT_peak interval  
   - QTc (Bazett)
 
-### Beat-Level Dataset
+### Beat-level dataset
 - RR interval per beat  
 - P/T durations  
 - PR_peak, QT_peak, QTc  
@@ -40,9 +40,12 @@ ECGml is a fully reproducible, Snakemake-driven pipeline for ECG signal processi
 - RR–QTc relationship  
 - Beat-level correlation heatmap  
 
----
-
-## Installation
+--------------------
+### Technical notes
+- QRS onset/offset estimation is handled by NeuroKit2; custom derivative-based methods are included only for exploratory morphology and are not intended as clinical QRS duration measures.
+- PR and QT values are surrogate peak-to-peak intervals, used because MIT-BIH signals often lack reliable isoelectric baselines for true onset/offset detection.
+- Beat labels are reduced to three classes (normal / ventricular / other) to stabilise training under strong class imbalance.
+- Delineation-derived features and morphology-derived descriptors are kept separate to avoid mixing method-specific assumptions in downstream models.
 
 Create a virtual environment:
 
