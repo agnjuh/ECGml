@@ -1,4 +1,4 @@
-# ECGml — Modular ECG signal processing & machine learning pipeline ![status](https://img.shields.io/badge/Status-Experimental_Research_Project-purple) ![license](https://img.shields.io/badge/License-All_rights_reserved-red) ![docs](https://img.shields.io/badge/Docs-Continuously_Updated-6f42c1)
+# ECGml — Modular ECG signal processing & machine learning pipeline ![status](https://img.shields.io/badge/Status-Experimental_Research_Project-purple) ![docs](https://img.shields.io/badge/Docs-Continuously_Updated-6f42c1)
 
 ECGml is a fully reproducible, Snakemake-driven pipeline for ECG signal processing, wave delineation, morphological feature extraction, and baseline machine-learning classification. It operates directly on MIT-BIH ECG records and produces visualisations, and model outputs.
 
@@ -48,11 +48,14 @@ ECGml is a fully reproducible, Snakemake-driven pipeline for ECG signal processi
 - Delineation-derived features and morphology-derived descriptors are kept separate to avoid mixing method-specific assumptions in downstream models.
 
 Create a virtual environment:
+Create a virtual environment:
 
 ```bash
 python3 -m venv ecg_env
 source ecg_env/bin/activate
+```
 
+```
 Outputs written to:
 results/
 │
@@ -66,28 +69,15 @@ results/
 ├── beat_features.csv
 ├── model_metrics.json
 └── figures/
+```
 
-
-Machine Learning Output
-the trained models produce:
+```
+Machine Learning Output:
 - Binary classification performance
 - ROC AUC scores
 - Confusion matrices
 - Random Forest feature importances
 All results stored in results/model_metrics.json
+```
 
-Project structure: 
-ECGml/
-│
-├── Snakefile
-├── requirements.txt
-├── download_data.py
-├── preprocessing.py
-├── r_peak_detection.py
-├── hrv.py
-├── features.py
-├── neurokit_delineate.py
-├── features_summary.py
-├── beat_level_correlation.py
-├── build_beat_dataset.py
-└── train_classifier.py
+This project is distributed under the terms described in the LICENSE file.
